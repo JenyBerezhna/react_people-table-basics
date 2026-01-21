@@ -1,10 +1,14 @@
 import { useEffect, useState } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import { getPeople } from '../api';
 import { Person } from '../types/Person';
 import { Loader } from '../components/Loader';
 import { PeopleTable } from '../components/PeopleTable';
 
 export const PeoplePage = () => {
+  const { slug } = useParams<{ slug: string }>();
+  const navigate = useNavigate();
+
   const [people, setPeople] = useState<Person[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
@@ -19,6 +23,27 @@ export const PeoplePage = () => {
       .catch(() => setIsError(true))
       .finally(() => setIsLoading(false));
   }, []);
+
+  // Update selectedPerson when people are loaded or URL changes
+  useEffect(() => {
+    if (!people.length) {
+      return;
+    }
+
+    if (slug) {
+      const found = people.find(p => p.slug === slug) ?? null;
+
+      setSelectedPerson(found);
+    } else {
+      setSelectedPerson(null);
+    }
+  }, [slug, people]);
+
+  // Update URL when row is clicked
+  const handleSelectPerson = (person: Person) => {
+    setSelectedPerson(person);
+    navigate(`/people/${person.slug}`);
+  };
 
   return (
     <>
@@ -42,7 +67,7 @@ export const PeoplePage = () => {
             <PeopleTable
               people={people}
               selectedPerson={selectedPerson}
-              onSelectPerson={setSelectedPerson}
+              onSelectPerson={handleSelectPerson}
             />
           )}
         </div>

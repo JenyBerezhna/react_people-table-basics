@@ -1,10 +1,17 @@
 import { Person } from '../types/Person';
+import { PersonLink } from './PersonLink';
 
 type Props = {
   people: Person[];
+  selectedPerson: Person | null;
+  onSelectPerson: (person: Person) => void;
 };
 
-export const PeopleTable: React.FC<Props> = ({ people }) => {
+export const PeopleTable: React.FC<Props> = ({
+  people,
+  selectedPerson,
+  onSelectPerson,
+}) => {
   return (
     <table
       data-cy="peopleTable"
@@ -22,16 +29,40 @@ export const PeopleTable: React.FC<Props> = ({ people }) => {
       </thead>
 
       <tbody>
-        {people.map(person => (
-          <tr data-cy="person" key={person.slug}>
-            <td>{person.name}</td>
-            <td>{person.sex}</td>
-            <td>{person.born}</td>
-            <td>{person.died}</td>
-            <td>{person.motherName || '-'}</td>
-            <td>{person.fatherName || '-'}</td>
-          </tr>
-        ))}
+        {people.map(person => {
+          const mother = people.find(p => p.name === person.motherName) || null;
+
+          const father = people.find(p => p.name === person.fatherName) || null;
+
+          return (
+            <tr
+              data-cy="person"
+              key={person.slug}
+              onClick={() => onSelectPerson(person)}
+              className={
+                selectedPerson?.slug === person.slug
+                  ? 'has-background-warning'
+                  : ''
+              }
+            >
+              <td>
+                <PersonLink person={person} />
+              </td>
+
+              <td>{person.sex}</td>
+              <td>{person.born}</td>
+              <td>{person.died}</td>
+
+              <td>
+                <PersonLink person={mother} />
+              </td>
+
+              <td>
+                <PersonLink person={father} />
+              </td>
+            </tr>
+          );
+        })}
       </tbody>
     </table>
   );

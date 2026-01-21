@@ -8,6 +8,7 @@ export const PeoplePage = () => {
   const [people, setPeople] = useState<Person[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
+  const [selectedPerson, setSelectedPerson] = useState<Person | null>(null);
 
   useEffect(() => {
     setIsLoading(true);
@@ -38,7 +39,11 @@ export const PeoplePage = () => {
           )}
 
           {!isLoading && !isError && people.length > 0 && (
-            <PeopleTable people={people} />
+            <PeopleTable
+              people={people}
+              selectedPerson={selectedPerson}
+              onSelectPerson={setSelectedPerson}
+            />
           )}
         </div>
       </div>

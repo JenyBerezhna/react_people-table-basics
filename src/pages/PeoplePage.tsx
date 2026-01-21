@@ -24,7 +24,6 @@ export const PeoplePage = () => {
       .finally(() => setIsLoading(false));
   }, []);
 
-  // Update selectedPerson when people are loaded or URL changes
   useEffect(() => {
     if (!people.length) {
       return;

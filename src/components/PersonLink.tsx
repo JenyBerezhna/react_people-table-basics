@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Person } from '../types/PersonApi';
+import { Person } from '../types/Person';
 
 type Props = {
   person: Person | null;

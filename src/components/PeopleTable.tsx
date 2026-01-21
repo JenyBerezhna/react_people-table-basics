@@ -29,41 +29,52 @@ export const PeopleTable: React.FC<Props> = ({
       </thead>
 
       <tbody>
-        {people.map(person => (
-          <tr
-            data-cy="person"
-            key={person.slug}
-            onClick={event => {
-              // Prevent selecting the row when clicking a link
-              if ((event.target as HTMLElement).closest('a')) {
-                return;
+        {people.map(person => {
+          const mother = people.find(p => p.name === person.motherName) ?? null;
+          const father = people.find(p => p.name === person.fatherName) ?? null;
+
+          return (
+            <tr
+              key={person.slug}
+              data-cy="person"
+              onClick={event => {
+                if ((event.target as HTMLElement).closest('a')) {
+                  return;
+                }
+
+                onSelectPerson(person);
+              }}
+              className={
+                selectedPerson?.slug === person.slug
+                  ? 'has-background-warning'
+                  : ''
               }
+            >
+              <td>
+                <PersonLink person={person} />
+              </td>
+              <td>{person.sex}</td>
+              <td>{person.born}</td>
+              <td>{person.died}</td>
 
-              onSelectPerson(person);
-            }}
-            className={
-              selectedPerson?.slug === person.slug
-                ? 'has-background-warning'
-                : ''
-            }
-          >
-            <td>
-              <PersonLink person={person} />
-            </td>
+              <td>
+                {mother ? (
+                  <PersonLink person={mother} />
+                ) : (
+                  person.motherName || '-'
+                )}
+              </td>
 
-            <td>{person.sex}</td>
-            <td>{person.born}</td>
-            <td>{person.died}</td>
-
-            <td>
-              <PersonLink person={person.mother} />
-            </td>
-
-            <td>
-              <PersonLink person={person.father} />
-            </td>
-          </tr>
-        ))}
+              <td>
+                {father ? (
+                  <PersonLink person={father} />
+                ) : (
+                  person.fatherName || '-'
+                )}
+              </td>
+            </tr>
+          );
+        })}
       </tbody>
     </table>
   );

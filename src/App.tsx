@@ -1,8 +1,8 @@
 import { HashRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { Navbar } from './components/Navbar';
-import { HomePage } from './components/HomePage';
-import { PeoplePage } from './components/PeoplePage';
-import { NotFoundPage } from './components/NotFoundPage';
+import { HomePage } from './pages/HomePage';
+import { PeoplePage } from './pages/PeoplePage';
+import { NotFoundPage } from './pages/NotFoundPage';
 
 export const App = () => (
   <HashRouter>

@@ -38,7 +38,13 @@ export const PeopleTable: React.FC<Props> = ({
             <tr
               data-cy="person"
               key={person.slug}
-              onClick={() => onSelectPerson(person)}
+              onClick={event => {
+                if ((event.target as HTMLElement).closest('a')) {
+                  return;
+                }
+
+                onSelectPerson(person);
+              }}
               className={
                 selectedPerson?.slug === person.slug
                   ? 'has-background-warning'

@@ -5,9 +5,14 @@ export interface Person {
   died: number;
   slug: string;
 
-  motherName: string | null;
-  fatherName: string | null;
+  // API fields
+  mother: string | null; // slug
+  father: string | null; // slug
 
-  mother: Person | null;
-  father: Person | null;
+  // Derived fields (filled in after processing)
+  motherName?: string | null;
+  fatherName?: string | null;
+
+  motherPerson?: Person | null;
+  fatherPerson?: Person | null;
 }
